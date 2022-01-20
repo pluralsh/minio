@@ -69,15 +69,15 @@ spec:
           command:
             - "/bin/sh"
             - "-ce"
-            {{  if eq .Values.gateway.type "s3" }}
+            {{-  if eq .Values.gateway.type "s3" }}
             - "/usr/bin/docker-entrypoint.sh minio gateway {{ .Values.gateway.type }} {{ .Values.gateway.s3.serviceEndpoint }} -S {{ .Values.certsPath }} --address :{{ .Values.minioAPIPort }} --console-address :{{ .Values.minioConsolePort }} {{- template "minio.extraArgs" . }} "
-            {{ else if eq .Values.gateway.type "gcs" }}
+            {{- else if eq .Values.gateway.type "gcs" }}
             - "/usr/bin/docker-entrypoint.sh minio gateway {{ .Values.gateway.type }} {{ .Values.gateway.gcs.projectId }} -S {{ .Values.certsPath }} --address :{{ .Values.minioAPIPort }} --console-address :{{ .Values.minioConsolePort }} {{- template "minio.extraArgs" . }} "
-            {{ else if eq .Values.gateway.type "azure" }}
+            {{- else if eq .Values.gateway.type "azure" }}
             - "/usr/bin/docker-entrypoint.sh minio gateway {{ .Values.gateway.type }} -S {{ .Values.certsPath }} --address :{{ .Values.minioAPIPort }} --console-address :{{ .Values.minioConsolePort }} {{- template "minio.extraArgs" . }} "
-            {{ else }}
+            {{- else }}
             - "/usr/bin/docker-entrypoint.sh minio gateway nas {{ $bucketRoot }} -S {{ .Values.certsPath }} --address :{{ .Values.minioAPIPort }} --console-address :{{ .Values.minioConsolePort }} {{- template "minio.extraArgs" . }} "
-            {{ end }}
+            {{- end }}
           volumeMounts:
             - name: minio-user
               mountPath: "/tmp/credentials"
@@ -138,6 +138,10 @@ spec:
             - name: {{ $key }}
               value: {{ $val | quote }}
             {{- end}}
+          {{- with .Values.envFrom }}
+          envFrom:
+          {{- toYaml . | nindent 12 }}
+          {{- end }}
           livenessProbe:
             httpGet:
               path: /minio/health/live
