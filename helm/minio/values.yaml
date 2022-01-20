@@ -101,8 +101,10 @@ pools: 1
 
 # Deploy if 'mode == gateway' - 4 replicas.
 gateway:
-  type: "nas" # currently only "nas,gcs" are supported.
+  type: "s3"
   replicas: 4
+  s3:
+    serviceEndpoint: https://s3.amazonaws.com
   gcs:
     serviceAccountFile: "" # credential JSON file of service account key (not required if using existing secret)
     projectId: "" # Google cloud project id required
@@ -314,6 +316,12 @@ environment:
   ## Please refer for comprehensive list https://docs.min.io/minio/baremetal/reference/minio-server/minio-server.html
   ## MINIO_SUBNET_LICENSE: "License key obtained from https://subnet.min.io"
   ## MINIO_BROWSER: "off"
+
+envFrom: []
+# - configMapRef:
+#     name: config-map-name
+# - secretRef:
+#     name: secret-name
 
 networkPolicy:
   enabled: false
