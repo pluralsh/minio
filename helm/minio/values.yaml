@@ -95,7 +95,7 @@ bucketRoot: ""
 # Number of drives attached to a node
 drivesPerNode: 1
 # Number of MinIO containers running
-replicas: 16
+replicas: 4
 # Number of expanded MinIO clusters
 pools: 1
 
@@ -127,7 +127,7 @@ trustedCertsSecret: ""
 ## ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
 ##
 persistence:
-  enabled: true
+  enabled: false
   annotations: {}
 
   ## A manually managed Persistent Volume and Claim
@@ -245,7 +245,7 @@ podLabels: {}
 ##
 resources:
   requests:
-    memory: 16Gi
+    memory: 1Gi
 
 ## List of users to be created after minio install
 ##
